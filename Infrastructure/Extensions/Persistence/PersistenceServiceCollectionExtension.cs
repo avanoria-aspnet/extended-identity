@@ -1,4 +1,6 @@
-﻿using Infrastructure.Persistence.Contexts;
+﻿using Application.Abstractions.Persistence;
+using Infrastructure.Persistence.Contexts;
+using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,8 @@ public static class PersistenceServiceCollectionExtension
         {
             options.UseSqlServer(configuration.GetConnectionString("SqlConnection"));
         });
+
+        services.AddScoped<IMemberRepository, MemberRepository>();
 
         return services;
     }
