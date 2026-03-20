@@ -414,8 +414,9 @@ form {
 }
 
 /* pages */
+.page__sign-up {
 
-
+}
 
 
 /* common sections */
@@ -470,5 +471,17 @@ footer {
         display: flex;
         align-items: center;
         justify-content: flex-end;
+    }
+}
+
+.section__auth {
+    max-width: 750px;
+    background-color: var(--section-background-color);
+    padding: 2rem 4rem 4rem;
+    border-radius: 20px;
+
+    form {
+        display: grid;
+        gap: 3rem;
     }
 }

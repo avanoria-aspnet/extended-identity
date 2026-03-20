@@ -25,8 +25,13 @@ public class IdentityService(UserManager<AuthenticationUser> userManager, SignIn
         if (!createResult.Succeeded)
             return new RegisterResult(false, [.. createResult.Errors.Select(x => x.Description)]);
 
-        if (!string.IsNullOrWhiteSpace(roleName))
-            await userManager.AddToRoleAsync(user, roleName);
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(roleName))
+                await userManager.AddToRoleAsync(user, roleName);
+        }
+        catch { }
+
 
         return new RegisterResult(true, [], user.Id);
     }

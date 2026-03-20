@@ -5,8 +5,8 @@ public record RegisterMemberRequest
     string Email,
     string Password,
 
-    string? FirstName,
-    string? LastName,
-    string? PhoneNumber,
-    string? ProfileImageUrl
+    string? FirstName = null,
+    string? LastName = null,
+    string? PhoneNumber = null,
+    string? ProfileImageUrl = null
 );

@@ -1,0 +1,28 @@
+﻿@using Presentation.WebApp.Models.Authentication.Register
+@model RegisterEmailForm
+@{
+    ViewData["Title"] = "Become a Member Today";
+    Layout = "Layouts/_AuthLayout";
+}
+
+<div class="page__sign-up">
+
+    <section class="section__auth">
+        <div class="title">
+            <h1>Become a Member</h1>
+            <p>Sign up to continue your fitness journey with full access to your customized program, training history, and progress tracking. Stay consistent, monitor your development, and keep moving forward with the structure and support built into your account.</p>
+        </div>
+
+        <hr />
+
+        <form id="signUpForm" method="post" asp-action="SignUp" asp-controller="Authentication" novalidate>
+            <div class="form-group">
+                <label class="form-label" asp-for="Email"></label>
+                <input class="form-input" asp-for="Email" />
+                <span asp-validation-for="Email"></span>
+            </div>
+            <button type="submit">Continue</button>
+        </form>
+    </section>
+
+</div>
