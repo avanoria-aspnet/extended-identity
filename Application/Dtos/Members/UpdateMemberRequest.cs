@@ -2,8 +2,9 @@
 
 public record UpdateMemberRequest
 (
+    string Id,
     string FirstName,
     string LastName,
-    string? PhoneNumber,
-    string? ProfileImageUrl
+    string? PhoneNumber = null,
+    string? ProfileImageUrl = null
 );

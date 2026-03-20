@@ -45,15 +45,33 @@ public class MemberService(IIdentityService identityService, IMemberRepository r
         var deleted = await identityService.DeleteAsync(member.UserId);
         
         return deleted 
-            ? new MemberResult(deleted, []) 
-            : new MemberResult(deleted, ["Unable to delete account"]);
+            ? new MemberResult(true, []) 
+            : new MemberResult(false, ["Unable to delete account"]);
     }
 
     public async Task<MemberResult> UpdateMemberDetailsAsync(UpdateMemberRequest request, CancellationToken ct = default)
     {
         if (request is null)
-            return new MemberResult(false, ["request model must be provided"]);
+            return new MemberResult(false, ["Request model must be provided"]);
 
+        var member = await repo.GetAsync(x => x.Id == request.Id, ct);
+        if (member is null)
+            return new MemberResult(false, ["Member not fund"]);
+        
+        member.UpdateProfileInformation(request.FirstName, request.LastName, request.ProfileImageUrl);
+        var memberUpdated = await repo.UpdateAsync(member, ct);
+
+        if (!memberUpdated)
+            return new MemberResult(false, ["Unable to update member details"]);
+
+        if (!string.IsNullOrWhiteSpace(request.PhoneNumber))
+        {
+            bool phoneNumberUpdated = await identityService.UpdatePhoneNumberAsync(member.Id, request.PhoneNumber);
+            if (!phoneNumberUpdated)
+                return new MemberResult(true, ["Member details updated but not phone number"]);
+        }
+
+        return new MemberResult(true, []);
     }
 
     public async Task<MemberDetailsResult> GetMemberDetailsAsync(string id, CancellationToken ct = default)
@@ -61,6 +79,25 @@ public class MemberService(IIdentityService identityService, IMemberRepository r
         if (string.IsNullOrWhiteSpace(id))
             return new MemberDetailsResult(false, ["Id is missing"]);
 
+        var member = await repo.GetAsync(x => x.Id == id, ct);
+        if (member is null)
+            return new MemberDetailsResult(false, ["Member not fund"]);
+
+        var email = await identityService.GetEmailAsync(member.UserId);
+        var phoneNumber = await identityService.GetPhoneNumberAsync(member.UserId);
+
+        var memberDetails = new MemberDetails
+        (
+            member.Id,
+            member.UserId,
+            member.FirstName,
+            member.LastName,
+            email,
+            phoneNumber,
+            member.ProfileImageUrl
+        );
+
+        return new MemberDetailsResult(true, [], memberDetails);
     }
 
 

@@ -13,4 +13,5 @@ public interface IIdentityService
 
     Task<bool> DeleteAsync(string userId);
     Task<bool> FindExistingEmailAsync(string email);
+    Task<bool> UpdatePhoneNumberAsync(string userId, string phoneNumber);
 }

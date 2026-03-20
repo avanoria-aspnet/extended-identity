@@ -63,6 +63,17 @@ public class IdentityService(UserManager<AuthenticationUser> userManager, SignIn
             .Select(x => x.PhoneNumber)
             .FirstOrDefaultAsync();
 
+    public async Task<bool> UpdatePhoneNumberAsync(string userId, string phoneNumber)
+    {
+        var user = await userManager.FindByIdAsync(userId);
+        if (user == null) return false;
+
+        var token = await userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
+        var result = await userManager.ChangePhoneNumberAsync(user, phoneNumber, token);
+
+        return result.Succeeded;
+    }
+
     public async Task<bool> DeleteAsync(string userId)
     {
         if (string.IsNullOrWhiteSpace(userId))
