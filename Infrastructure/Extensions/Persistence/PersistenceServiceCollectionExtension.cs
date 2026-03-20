@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Infrastructure.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -8,6 +10,11 @@ public static class PersistenceServiceCollectionExtension
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
+        services.AddDbContext<PersistenceContext>(options =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("SqlConnection"));
+        });
+
         return services;
     }
 }
