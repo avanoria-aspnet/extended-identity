@@ -37,7 +37,7 @@ public class MemberService(IIdentityService identityService, IMemberRepository r
         if (string.IsNullOrWhiteSpace(id))
             return new MemberResult(false, ["Id is missing"]);
 
-        var member = await repo.GetAsync(x => x.Id == id, ct);
+        var member = await repo.GetAsync(x => x.UserId == id, ct);
         if (member is null)
             return new MemberResult(false, ["Member not found"]);
 

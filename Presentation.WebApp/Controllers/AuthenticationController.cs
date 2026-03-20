@@ -1,11 +1,13 @@
-﻿using Application.Abstractions.Services;
+﻿using Application.Abstractions.Identity;
+using Application.Abstractions.Services;
 using Application.Dtos.Members;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApp.Models.Authentication.Register;
+using Presentation.WebApp.Models.Authentication.SignIn;
 
 namespace Presentation.WebApp.Controllers;
 
-public class AuthenticationController(IMemberService service) : Controller
+public class AuthenticationController(IIdentityService auth, IMemberService service) : Controller
 {
     private const string EmailSessionKey = "EmailSessionKey";
 
@@ -55,5 +57,37 @@ public class AuthenticationController(IMemberService service) : Controller
         }
 
         return RedirectToAction(nameof(SignIn));
+    }
+
+    [HttpGet("sign-in")]
+    public IActionResult SignIn()
+    {
+        return View();
+    }
+
+    [HttpPost("sign-in")]
+    public async Task<IActionResult> SignIn(SignInForm form)
+    {
+        if (!ModelState.IsValid)
+        {
+            ViewData["ErrorMessage"] = "Incorrect email or password";
+            return View(form);
+        }
+
+        var loggedIn = await auth.LoginAsync(form.Email, form.Password, false, false);
+        if (!loggedIn)
+        {
+            ViewData["ErrorMessage"] = "Incorrect email or password";
+            return View(form);
+        }
+
+        return RedirectToAction("My", "Account");
+    }
+
+    [HttpPost]
+    public new async Task<IActionResult> SignOut()
+    {
+        await auth.LogoutAsync();
+        return RedirectToAction("Index", "Home");
     }
 }

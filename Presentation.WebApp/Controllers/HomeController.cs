@@ -6,7 +6,7 @@ public class HomeController : Controller
 {
     public IActionResult Index()
     {
-        return RedirectToAction("SignUp", "Authentication");
+        return RedirectToAction("SignIn", "Authentication");
         //return View();
     }
 }
