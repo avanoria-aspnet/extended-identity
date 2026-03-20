@@ -1,0 +1,10 @@
+﻿@{
+    var pageTitle = ViewData["Title"]?.ToString();
+}
+
+@if (!string.IsNullOrWhiteSpace(pageTitle))
+{
+    <section class="section__page-title">
+        <h1>@pageTitle</h1>
+    </section>
+}

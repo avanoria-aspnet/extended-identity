@@ -1,0 +1,474 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: normal;
+    font-family: var(--font-default);
+    background-color: var(--body-background-color);
+    color: var(--text-color);
+}
+
+/* typografphy */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--heading-color);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-style: normal;
+    margin: 1.5rem 0 0;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 500;
+    line-height: 4.25rem;
+}
+
+h2 {
+    font-size: 3rem;
+    font-weight: 500;
+    line-height: 3.75rem;
+}
+
+h3 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 4.25rem;
+}
+
+hr {
+    width: 100%;
+    opacity: 0.3;
+    margin: 2rem 0;
+
+    &.minimal {
+        margin: 0;
+    }
+}
+
+/* container */
+.container {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+    padding-inline: 1rem;
+
+    @media (width >= 768px) {
+        max-width: 720px;
+    }
+
+    @media (width >= 992px) {
+        max-width: 960px;
+    }
+
+    @media (width >= 1200px) {
+        max-width: 1140px;
+    }
+
+    @media (width >= 1400px) {
+        max-width: 1320px;
+    }
+
+    &.full {
+        max-width: 100%;
+    }
+}
+
+/* menus */
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    .menu-item {
+        font-size: 1.125em;
+
+        &.menu-dropdown::after {
+            content: "\f078";
+            font-family: var(--font-fa);
+            font-size: 1em;
+            margin-left: 0.5rem;
+        }
+
+        .menu-item-link {
+            color: var(--menu-link-accent-color);
+            text-decoration: none;
+
+            &:hover {
+                color: var(--menu-link-accent-hover-color);
+                text-underline-offset: 0.5rem;
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+/* buttons */
+button,
+.btn {
+    color: var(--button-text-color);
+    background-color: var(--button-background-color);
+    border: 1px solid var(--button-border-color);
+    display: inline-block;
+    padding: 0.9rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+
+    transition: background-color 0.15s ease-in-out, 
+                color 0.15s ease-in-out
+                border 0.15s ease-in-out;
+
+    &::after {
+        content: "\f054";
+        font-family: var(--font-fa);
+        font-weight: 900;
+        font-size: 1rem;
+        margin-left: 0.5rem;
+    }
+
+    &:hover {
+        color: var(--button-text-hover-color);
+        background-color: var(--button-background-hover-color);
+        border: 1px solid var(--button-border-hover-color);
+    }
+}
+
+.btn-accent {
+    color: var(--button-text-color);
+    background-color: var(--button-background-color);
+    border: 1px solid var(--button-border-color); 
+
+    &:hover {
+        color: var(--button-accent-text-hover-color);
+        background-color: var(--button-accent-background-hover-color);
+        border: 1px solid var(--button-accent-border-hover-color);
+    }
+}
+
+/* form */
+form {
+    display: grid;
+    align-items: start;
+
+    .form-group {
+        width: 100%;
+        display: grid;
+        gap: 0.5rem;
+
+        &.checkbox {
+            .form-checkbox-validation {
+                position: relative;
+                display: grid;
+                grid-template-columns: auto 1fr;
+                grid-template-areas:
+                    "check label" ". error";
+                align-items: center;
+            }
+
+            .form-checkbox {
+                grid-area: check;
+            }
+
+            .form-checkbox-label {
+                grid-area: label;
+            }
+
+            .field-validation {
+                grid-area: error;
+            }
+        }
+    }
+   
+    .form-checkbox-input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+        margin: 0;
+
+        &:checked + .form-checkbox-checkmark {
+            border: 1px solid var(--input-checked-color);
+            background-color: var(--input-checked-color);
+            color: var(--input-text-color);
+        }
+
+        &:checked + .form-checkbox-checkmark::after {
+            opacity: 1;
+        }
+    }
+
+    .form-checkbox-checkmark {
+        cursor: pointer;
+        border: 1px solid var(--input-background-color);
+        background-color: var(--input-border-color);
+        color: var(--input-text-color);
+        height: 25px;
+        width: 25px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        &::after {
+            content: "\f00c";
+            font-family: var(--font-fa);
+            font-size: 0.8em;
+            opacity: 0;
+        }
+    }
+
+    .form-checkbox-validation:has(.form-checkbox-input.input-validation-error) .form-checkbox-checkmark {
+        border: 1px solid var(--input-error-text-color);
+    }
+
+    .form-checkbox-validation:has(.form-checkbox-input.input-validation-error)::after {
+        content: "\e405";
+        font-family: var(--font-fa);
+        font-weight: 900;
+        font-size: 1rem;
+        color: var(--input-error-text-color);
+
+        position: absolute;
+        left: 105%;
+        top: 0rem;
+    }
+
+    .form-checkbox-validation .field-validation-error {
+        position: absolute;
+        left: 3.5rem;
+        top: -0.2rem;
+
+        background: var(--tooltip-background-color);
+        color: var(--tooltip-text-color);
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+        border-radius: 6px;
+        white-space: nowrap;
+
+        opacity: 1;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+        z-index: 2;
+    }
+
+    .form-checkbox-validation:hover .field-validation-error {
+        opacity: 1;
+    }
+
+    .form-label {
+        font-size: 0.9em;
+        font-weight: 600;
+    }
+
+    .checkbox-label {
+        font-size: 1em;
+        font-weight: 400;
+        margin-left: 1rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        display: block;
+        width: 100%;
+        padding: 1rem 1rem 1rem 1rem;
+        font-size: 1em;
+        font-weight: 400;
+        font-family: var(--font-default);
+        color: var(--input-text-color);
+        background-color: var(--input-background-color);
+        border: 1px solid var(--input-border-color);
+        outline: none;
+        border-radius: 10px;
+
+        &::placeholder {
+            opacity: 0.4;
+        }
+    }
+
+    .form-textarea {
+        resize: none;
+        min-height: 200px;
+    }
+
+    .form-input-validation {
+        position: relative;
+        color: var(--input-error-text-color);
+
+        &:has(.input-validation-error)::after {
+            content: "\e405";
+            font-family: var(--font-fa);
+            font-weight: 900;
+            font-size: 1.1em;
+
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+         .field-validation-error {
+            position: absolute;
+            right: 1rem;
+            top: 100%;
+            transform: translateY(-20%);
+
+            background: var(--tooltip-background-color);
+            color: var(--tooltip-text-color);
+            font-size: 0.75rem;
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            white-space: nowrap;
+
+            opacity: 1;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        &:hover .field-validation-error {
+            opacity: 1;
+        }
+    }
+
+    .input-validation-error {
+        color: var(--input-error-text-color);
+        border: 1px solid var(--input-error-text-color);
+    }
+
+    .field-validation-error {
+        font-size: 0.8em;
+        color: var(--input-error-text-color);
+    }
+
+    [data-id="title"] {
+        grid-area: title;
+    }
+    [data-id="description"] {
+        grid-area: description;
+    }
+    [data-id="first-name"] {
+        grid-area: firstname;
+    }
+    [data-id="last-name"] {
+        grid-area: lastname;
+    }
+    [data-id="email"] {
+        grid-area: email;
+    }
+    [data-id="password"] {
+        grid-area: password;
+    }
+    [data-id="confirm-password"] {
+        grid-area: confirm;
+    }
+    [data-id="phone"] {
+        grid-area: phone;
+    }
+    [data-id="file-upload"] {
+        grid-area: file;
+    }
+    [data-id="message"] {
+        grid-area: message;
+    }
+    [data-id="terms"] {
+        grid-area: terms;
+    }
+    [data-id="submit-button"] {
+        grid-area: submit;
+    }
+}
+
+/* layouts */
+.app-layout {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 1rem;
+    height: 100dvh;
+    padding: 1rem;
+}
+
+.auth-layout {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 1rem;
+    height: 100dvh;
+    padding: 1rem;
+
+    main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* pages */
+
+
+
+
+/* common sections */
+header {
+    display: flex;
+    align-items: center;
+    background-color: var(--section-accent-background-color);
+    color: var(--text-accent-color);
+    border-radius: 20px;
+    padding: 1rem 2rem 1rem;
+    min-height: 80px;
+}
+
+footer {
+    display: none;
+    align-items: center;
+    background-color: var(--section-accent-background-color);
+    color: var(--text-accent-color);
+    border-radius: 20px;
+    padding: 1rem 2rem 1rem;
+    min-height: 80px;
+}
+
+.section__page-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+/* other sections */
+
+.section__header {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 3fr 2fr;
+    align-items: center;
+
+    .logotype {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .main-menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+        
+    .account-menu {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+}
