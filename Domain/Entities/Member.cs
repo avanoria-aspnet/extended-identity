@@ -17,13 +17,13 @@ public class Member
         ProfileImageUrl = profileImageUrl;
     }
 
-    public static Member Create(string userId, string? firstName, string? lastName, string? profileImageUrl)
+    public static Member Create(string userId, string? firstName = null, string? lastName = null, string? profileImageUrl = null)
     => new(Guid.NewGuid().ToString(), userId, firstName, lastName, profileImageUrl);
 
-    public static Member Create(string id, string userId, string? firstName, string? lastName, string? profileImageUrl) 
+    public static Member Create(string id, string userId, string? firstName = null, string? lastName = null, string? profileImageUrl = null) 
         => new(id, userId, firstName, lastName, profileImageUrl);
 
-    public void UpdateProfileInformation(string firstName, string lastName, string? profileImageUrl)
+    public void UpdateProfileInformation(string firstName, string lastName, string? profileImageUrl = null)
     {
         FirstName = firstName;
         LastName = lastName;
