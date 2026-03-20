@@ -1,7 +1,6 @@
 ﻿using Application.Abstractions.Identity;
 using Application.Abstractions.Persistence;
 using Application.Abstractions.Services;
-using Application.Dtos.Identity;
 using Application.Dtos.Members;
 using Domain.Entities;
 
@@ -26,9 +25,11 @@ public class MemberService(IIdentityService identityService, IMemberRepository r
             return new MemberResult(false, ["User Id is missing"]);
 
         var member = Member.Create(registerResult.UserId);
-        await repo.AddAsync(member, ct);
+        var created = await repo.AddAsync(member, ct);
 
-        return new MemberResult(true, [], member.Id, member.UserId);
+        return created
+            ? new MemberResult(true, [], member.Id, member.UserId)
+            : new MemberResult(false, ["Unable to create member account"]);
     }
 
     public async Task<MemberResult> DeleteMemberAsync(string id, CancellationToken ct = default)
@@ -42,16 +43,25 @@ public class MemberService(IIdentityService identityService, IMemberRepository r
 
         await repo.RemoveAsync(member, ct);
         var deleted = await identityService.DeleteAsync(member.UserId);
-        return deleted ? new MemberResult(deleted, []): new MemberResult(deleted, ["Unable to delete account"]);
+        
+        return deleted 
+            ? new MemberResult(deleted, []) 
+            : new MemberResult(deleted, ["Unable to delete account"]);
     }
 
-    public Task<MemberDetails?> GetMemberDetailsAsync(string id, CancellationToken ct = default)
+    public async Task<MemberResult> UpdateMemberDetailsAsync(UpdateMemberRequest request, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        if (request is null)
+            return new MemberResult(false, ["request model must be provided"]);
+
     }
 
-    public Task<MemberDetails?> UpdateMemberDetailsAsync(UpdateMemberRequest request, CancellationToken ct = default)
+    public async Task<MemberDetailsResult> GetMemberDetailsAsync(string id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(id))
+            return new MemberDetailsResult(false, ["Id is missing"]);
+
     }
+
+
 }

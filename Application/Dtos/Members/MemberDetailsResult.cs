@@ -1,9 +1,8 @@
 ﻿namespace Application.Dtos.Members;
 
-public record MemberResult
+public record MemberDetailsResult
 (
     bool Succeeded,
     IReadOnlyCollection<string> Errors,
-    string? Id = null,
-    string? UserId = null
+    MemberDetails? MemberDetails = null
 );

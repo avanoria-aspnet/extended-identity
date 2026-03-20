@@ -8,22 +8,25 @@ namespace Infrastructure.Persistence.Repositories;
 
 public class MemberRepository(PersistenceContext context) : IMemberRepository
 {
-    public async Task AddAsync(Member member, CancellationToken ct = default)
+    public async Task<bool> AddAsync(Member member, CancellationToken ct = default)
     {
         await context.AddAsync(member, ct);
         await context.SaveChangesAsync(ct);
+        return true;
     }
 
-    public async Task UpdateAsync(Member member, CancellationToken ct = default)
+    public async Task<bool> UpdateAsync(Member member, CancellationToken ct = default)
     {
         context.Update(member);
         await context.SaveChangesAsync(ct);
+        return true;
     }
 
-    public async Task RemoveAsync(Member member, CancellationToken ct = default)
+    public async Task<bool> RemoveAsync(Member member, CancellationToken ct = default)
     {
         context.Remove(member);
         await context.SaveChangesAsync(ct);
+        return true;
     }
 
     public async Task<Member?> GetAsync(Expression<Func<Member, bool>> expression, CancellationToken ct = default)
